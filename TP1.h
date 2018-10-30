@@ -3,13 +3,14 @@ using namespace std;
 //criando a classe
 class Matriz{
 	private:
+		int l,c;
 	public:
 		double **p;
 		Matriz();
 		Matriz(const Matriz &m);
 		Matriz(int linhas, int colunas, const double &valor = 0);
 		~Matriz();
-		void imprimeMatriz(Matriz &m);
+		void imprimeMatriz();
 		
 };
 
@@ -22,10 +23,12 @@ Matriz::Matriz(){
 }
 
 Matriz::Matriz(int linhas, int colunas, const double &valor){
-	p = new double * [colunas];
-	for(int i = 0; i<linhas; i++){
-		p[i] = new double[linhas];
-		for(int j = 0; j<colunas; j++){
+	l = linhas;
+	c = c;
+	p = new double * [c];
+	for(int i = 0; i<l; i++){
+		p[i] = new double[l];
+		for(int j = 0; j<c; j++){
 			p[i][j] = 0;
 		}
 	}
@@ -34,5 +37,5 @@ Matriz::Matriz(int linhas, int colunas, const double &valor){
 Matriz::~Matriz(){
 }
 
-Matriz::imprimeMatriz(Matriz &m){
+void imprimeMatriz(){
 }
