@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+
 //criando a classe
 class Matriz{
 	private:
@@ -13,7 +14,7 @@ class Matriz{
 };
 
 Matriz::Matriz(const Matriz &m){
-
+	cout << "aqui roda" << endl;
 }
 
 Matriz::Matriz(){
