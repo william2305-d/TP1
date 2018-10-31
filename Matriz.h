@@ -12,5 +12,8 @@ class Matriz{
 		Matriz(int linhas, int colunas, const double &valor = 0);
 		~Matriz();
 		void imprimeMatriz();
-		
+		int zeros();
+		int getRows();
+		int getCols();
+		int ones();
 };
