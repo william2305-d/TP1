@@ -7,8 +7,7 @@ Matriz::Matriz(const Matriz &m){
 }
 
 Matriz::Matriz(){
-	p = new double *[1];
-	p[1] = 0;
+	p = NULL;
 }
 
 Matriz::Matriz(int linhas, int colunas, const double &valor){
@@ -18,7 +17,7 @@ Matriz::Matriz(int linhas, int colunas, const double &valor){
 	for(int i = 0; i<l; i++){
 		p[i] = new double[c];
 		for(int j = 0; j<c; j++){
-			p[i][j] = 0;
+			p[i][j] = valor;
 		}
 	}
 }
@@ -34,10 +33,38 @@ void Matriz::imprimeMatriz(){
 		}
 		cout << endl;
 	}
+	cout << endl;
+}
+
+int Matriz::zeros(){
+	for(int i = 0; i<l; i++){
+		for(int j=0; j<c; j++){
+			p[i][j] = 0;
+		}
+	}
+}
+
+int Matriz::ones(){
+	for(int i = 0; i<l; i++){
+		for(int j=0; j<c; j++){
+			p[i][j] = 1;
+		}
+	}
+}
+
+int Matriz::getRows(){
+	return l;
+}
+
+int Matriz::getCols(){
+	return c;
 }
 
 int main(){
-	Matriz M(5,3,0);
-	M.imprimeMatriz();
+	int colunas,linhas;
+	Matriz M(2,5,10);
+	linhas = M.getRows();
+	colunas  = M.getCols();
+	cout << "colunas: " << colunas << " " << "linhas: " << linhas << endl;  
 	return(0);
 }
