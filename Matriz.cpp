@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Matriz.h"
-//uhuuuuuuuul
 using namespace std;
 Matriz::Matriz(const Matriz &m){
 
@@ -61,13 +60,17 @@ int Matriz::getCols(){
 }
 
 Matriz Matriz::operator+(const Matriz &B)const{
-	cout << "teste" << endl;
 	int linhaA = l;
 	int colunaA = c;
-	int linhaB = B.zeros();
-	int colunaB = B.ones();
-	if((linhaA == linhaB)&&(colunaA == colunaB)){
-		cout << l << endl;
+	int linhaB = B.l;
+	int colunaB = B.c;
+	if(((linhaA == linhaB)&&(colunaA == colunaB))){
+		Matriz Resultado(linhaA,colunaA,0);
+		for(i = 0; i<linhaA; i++){
+			for(j = 0; j<colunaA; j++){
+				Resultado.p[i][j] = A.p[i][j] + B.p[i][j]; 
+			} 
+		}
 	}
 }
 
@@ -76,6 +79,8 @@ int main(){
 	Matriz M1(2,5,10);
 	Matriz M2(2,5,10);
 	Matriz M3(2,5,0);
-	M3 = M1+M2;	  
+	M3 = M1+M2;
+	int coluna = M1.getCols();
+	cout << coluna << endl;	  
 	return(0);
 }
