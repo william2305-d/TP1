@@ -64,23 +64,24 @@ Matriz Matriz::operator+(const Matriz &B)const{
 	int colunaA = c;
 	int linhaB = B.l;
 	int colunaB = B.c;
-	if(((linhaA == linhaB)&&(colunaA == colunaB))){
-		Matriz Resultado(linhaA,colunaA,0);
-		for(i = 0; i<linhaA; i++){
-			for(j = 0; j<colunaA; j++){
-				Resultado.p[i][j] = A.p[i][j] + B.p[i][j]; 
-			} 
-		}
+	if(((linhaA != linhaB)||(colunaA != colunaB))){
+		throw std::invalid_argument("Matrizes não compativeis para adição");
 	}
+	Matriz Resultado(linhaA,colunaA,0);
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			Resultado.p[i][j] = p[i][j] + B.p[i][j]; 
+		} 
+	}
+	return Resultado;
 }
 
 int main(){
 	int colunas,linhas;
-	Matriz M1(2,5,10);
-	Matriz M2(2,5,10);
+	Matriz M1(5,3,5);
+	Matriz M2(5,2,12);
 	Matriz M3(2,5,0);
 	M3 = M1+M2;
-	int coluna = M1.getCols();
-	cout << coluna << endl;	  
+	M3.imprimeMatriz();	  
 	return(0);
 }
