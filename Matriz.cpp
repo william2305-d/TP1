@@ -23,7 +23,11 @@ Matriz::Matriz(int linhas, int colunas, const double &valor){
 }
 
 Matriz::~Matriz(){
-
+	//Desalocação da matriz
+	for(int i = 0; i<l; i++){
+		delete[] p[i];
+	}
+	delete[] p;
 }
 
 void Matriz::imprimeMatriz(){
