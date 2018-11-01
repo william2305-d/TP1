@@ -16,4 +16,5 @@ class Matriz{
 		int getRows();
 		int getCols();
 		int ones();
+		Matriz operator+(Matriz &A,Matriz &B);
 };
