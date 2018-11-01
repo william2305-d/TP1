@@ -4,8 +4,8 @@ using namespace std;
 //criando a classe
 class Matriz{
 	private:
-		int l,c;
 	public:
+		int l,c;
 		double **p;
 		Matriz();
 		Matriz(const Matriz &m);
@@ -16,5 +16,5 @@ class Matriz{
 		int getRows();
 		int getCols();
 		int ones();
-		Matriz operator+(Matriz &A,Matriz &B);
+		Matriz operator+(const Matriz &A)const;
 };
