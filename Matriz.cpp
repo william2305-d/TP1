@@ -10,7 +10,7 @@ Matriz::Matriz(){
 	p = NULL;
 }
 
-Matriz::Matriz(int linhas, int colunas, const double &valor){
+Matriz::Matriz(int linhas, int colunas, const double &valor = 0){
 	l = linhas;
 	c = colunas;
 	p = new double * [l];
