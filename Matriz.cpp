@@ -60,6 +60,16 @@ int Matriz::getCols(){
 	return c;
 }
 
+Matriz Matriz::operator+(Matriz &A,Matriz &B){
+	linhaA = A.getRows();
+	colunaA = A.getCols();
+	linhaB = B.getRows();
+	colunaB = B.getCols();
+	if((linhaA == linhaB)&&(colunaA == colunaB)){
+		
+	}
+}
+
 int main(){
 	int colunas,linhas;
 	Matriz M(2,5,10);
