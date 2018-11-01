@@ -60,21 +60,22 @@ int Matriz::getCols(){
 	return c;
 }
 
-Matriz Matriz::operator+(Matriz &A,Matriz &B){
-	linhaA = A.getRows();
-	colunaA = A.getCols();
-	linhaB = B.getRows();
-	colunaB = B.getCols();
+Matriz Matriz::operator+(const Matriz &B)const{
+	cout << "teste" << endl;
+	int linhaA = l;
+	int colunaA = c;
+	int linhaB = B.zeros();
+	int colunaB = B.ones();
 	if((linhaA == linhaB)&&(colunaA == colunaB)){
-		
+		cout << l << endl;
 	}
 }
 
 int main(){
 	int colunas,linhas;
-	Matriz M(2,5,10);
-	linhas = M.getRows();
-	colunas  = M.getCols();
-	cout << "colunas: " << colunas << " " << "linhas: " << linhas << endl;  
+	Matriz M1(2,5,10);
+	Matriz M2(2,5,10);
+	Matriz M3(2,5,0);
+	M3 = M1+M2;	  
 	return(0);
 }
