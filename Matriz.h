@@ -17,4 +17,5 @@ class Matriz{
 		int getCols();
 		int ones();
 		Matriz operator+(const Matriz &A)const;
+		Matriz operator+(const Matriz &A)const;
 };
