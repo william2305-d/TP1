@@ -76,7 +76,7 @@ Matriz Matriz::operator+(const Matriz &B)const{
 	return Resultado;
 }
 
-Matriz Matriz::operator+=(const Matriz &B)const{
+void Matriz::operator+=(const Matriz &B)const{
 	int linhaA = l;
 	int colunaA = c;
 	int linhaB = B.l;
@@ -84,21 +84,18 @@ Matriz Matriz::operator+=(const Matriz &B)const{
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
 		throw std::invalid_argument("Matrizes não compativeis para adição");
 	}
-	Matriz Resultado(linhaA,colunaA,0);
 	for(int i = 0; i<linhaA; i++){
 		for(int j = 0; j<colunaA; j++){
-			Resultado.p[i][j] = p[i][j] + B.p[i][j]; 
+			p[i][j] = p[i][j] + B.p[i][j]; 
 		} 
 	}
-	return Resultado;
 }
 
 int main(){
 	int colunas,linhas;
-	Matriz M1(5,3,5);
+	Matriz M1(5,2,7);
 	Matriz M2(5,2,12);
-	Matriz M3(2,5,0);
-	M3 = M1+M2;
-	M3.imprimeMatriz();	  
+	M1+=M2;
+	M1.imprimeMatriz();	  
 	return(0);
 }
