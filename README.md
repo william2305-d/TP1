@@ -4,7 +4,7 @@ TP1 - Programação Orientada a Objetos(Matrizes)
 Separação das tarefinhas:
 
 William:
-Soma, Soma&atribuição, transposta
+Soma, Soma&atribuição, transposta.
 
 Emanula:
 Subtração, Subtração&atribuição, Igualdade, Desigualdade, Leitura.
