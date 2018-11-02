@@ -91,11 +91,53 @@ void Matriz::operator+=(const Matriz &B)const{
 	}
 }
 
+void Matriz::operator~(Matriz &A){
+	double m[A.ncolunas][A.nlinhas];
+	int auxColunas;
+	
+	//atribuição de valores da matriz A para uma matriz auxiliar
+	for(int i = 0; i < A.ncolunas; i++){
+		for(int j = 0; j < A.nlinhas; j++){
+			m[i][j] = A.m[j][i];
+		}
+	}
+
+	//Desalocação da matriz A
+	for(int i = 0; i < A.nlinhas; i++){
+		delete[] A.m[i]; 
+	}
+	delete[] A.m;
+	
+	//atribuição de novos valores de linhas e colunas
+	auxColunas = A.ncolunas;
+	A.ncolunas = A.nlinhas;
+	A.nlinhas = auxColunas;
+	
+	//Alocação de memoria para nova matriz
+	A.m = new double * [A.ncolunas];
+
+	for(int i = 0; i<A.nlinhas; i++){
+		A.m[i] = new double[A.nlinhas];
+		for(int j = 0; j<A.ncolunas; j++){
+			A.m[i][j] = 0 ;
+		}
+	}
+
+	//atribuição de valores da nova matriz
+	for(int i = 0; i < A.nlinhas; i++){
+		for(int j = 0; j < A.ncolunas; j++){
+			A.m[i][j] = m[i][j];
+		}
+	}
+}
+
+
 int main(){
 	int colunas,linhas;
 	Matriz M1(5,2,7);
 	Matriz M2(5,2,12);
-	M1+=M2;
-	M1.imprimeMatriz();	  
+	M1.imprimeMatriz();
+	~M1;
+	M1.imprimeMatriz();
 	return(0);
 }
