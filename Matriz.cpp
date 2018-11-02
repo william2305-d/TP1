@@ -91,42 +91,42 @@ void Matriz::operator+=(const Matriz &B)const{
 	}
 }
 
-void Matriz::operator~(Matriz &A){
-	double m[A.ncolunas][A.nlinhas];
+void Matriz::operator~(){
+	double m[c][l];
 	int auxColunas;
 	
-	//atribuição de valores da matriz A para uma matriz auxiliar
-	for(int i = 0; i < A.ncolunas; i++){
-		for(int j = 0; j < A.nlinhas; j++){
-			m[i][j] = A.m[j][i];
+	//atribuição de valores da matriz local para uma matriz auxiliar
+	for(int i = 0; i < c; i++){
+		for(int j = 0; j < l; j++){
+			m[i][j] = p[j][i];
 		}
 	}
 
-	//Desalocação da matriz A
-	for(int i = 0; i < A.nlinhas; i++){
-		delete[] A.m[i]; 
+	//Desalocação da matriz
+	for(int i = 0; i < l; i++){
+		delete[] p[i]; 
 	}
-	delete[] A.m;
+	delete[] p;
 	
 	//atribuição de novos valores de linhas e colunas
-	auxColunas = A.ncolunas;
-	A.ncolunas = A.nlinhas;
-	A.nlinhas = auxColunas;
+	auxColunas = c;
+	c = l;
+	l = auxColunas;
 	
 	//Alocação de memoria para nova matriz
-	A.m = new double * [A.ncolunas];
+	p = new double * [c];
 
-	for(int i = 0; i<A.nlinhas; i++){
-		A.m[i] = new double[A.nlinhas];
-		for(int j = 0; j<A.ncolunas; j++){
-			A.m[i][j] = 0 ;
+	for(int i = 0; i<l; i++){
+		p[i] = new double[l];
+		for(int j = 0; j<c; j++){
+			p[i][j] = 0 ;
 		}
 	}
 
 	//atribuição de valores da nova matriz
-	for(int i = 0; i < A.nlinhas; i++){
-		for(int j = 0; j < A.ncolunas; j++){
-			A.m[i][j] = m[i][j];
+	for(int i = 0; i < l; i++){
+		for(int j = 0; j < c; j++){
+			p[i][j] = m[i][j];
 		}
 	}
 }
