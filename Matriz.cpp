@@ -1,10 +1,142 @@
 #include <iostream>
 #include "Matriz.h"
-//uhuuuuuuuul
-using namespace std;
-Matriz::Matriz(const Matriz &m){
 
+using namespace std;
+
+Matriz::Matriz(const Matriz &m){
+	l = m.l;
+	c = m.c;
+	//Nova matriz, apenas valores são copiados.
+	p = new double * [l];
+	for(int i = 0; i<l; i++){
+		p[i] = new double[c];
+		for(int j = 0; j<c; j++){
+			p[i][j] = m.p[i][j];
+		}
+	}
 }
+
+void Matriz::operator *= (double const &right){
+	for (int i = 0; i < l; i++){
+		for (int j = 0; j < c; j++){
+			p[i][j] *= right;
+		}
+	}
+}
+
+Matriz Matriz::operator*(double const &right){
+	Matriz res(l, c);
+	for (int i = 0; i < l; i++){
+		for (int j = 0; j < c; j++){
+			res.p[i][j] = p[i][j] * right;
+		}
+	}
+	return res;
+}
+
+Matriz Matriz::operator*(const Matriz &right){
+	if(c !=right.l){
+		cout << "Matrizes não compativeis para multiplicação" << endl;
+		//throw std::invalid_argument( "Matrices aren't compatible for multiplication" );
+	}
+	Matriz res(l, right.c);
+	for (int i = 0; i < res.l; i++){
+		for (int j = 0; j < res.c; j++){
+			double acc = 0;
+			for (int k = 0; k < c; k++){
+				acc+= p[i][k] * right.p[k][j];
+			}
+			res.p[i][j] = acc;
+		}
+	}
+	return res;
+}
+
+void Matriz::operator*=(const Matriz &right){
+	if(c !=right.l || c !=right.c){
+		cout << "Matrizes não compativeis para multiplicação" << endl;
+		//throw invalid_argument( "Matrices aren't compatible for multiplication" );
+	}
+	Matriz res(l, right.c);
+	for (int i = 0; i < res.l; i++){
+		for (int j = 0; j < res.c; j++){
+			double acc = 0;
+			for (int k = 0; k < c; k++){
+				acc+= p[i][k] * right.p[k][j];
+			}
+			res.p[i][j] = acc;
+		}
+	}
+	*this = res;
+}
+
+ostream& operator<<(ostream& os, const Matriz& m){  
+	for(int i = 0; i < m.l ; i++){
+		for(int j = 0; j < m.c; j++){
+			os << m.p[i][j] << " ";
+		}
+		os << endl;
+	}
+	return os;
+} 
+
+istream& operator>>(istream& os, Matriz& m){ 
+	cout << "A Matriz possui " << m.l << " Linhas " << m.c << " Colunas"<< endl;
+	for(int i = 0; i < m.l ; i++){
+		for(int j = 0; j < m.c; j++){
+			cout << " A[" << i + 1 << "] [" << j + 1 << "] = " ;
+			double valor;
+			os >> m.p[i][j];
+		}
+	}
+	return os;
+}   
+  
+void Matriz::operator=(const Matriz &A){
+	if( l!=A.l || c != A.c){
+		cout << "Matrizes não compativeis para atribuição" << endl;
+	}
+	else{
+		for(int i = 0; i < l ; i++){
+			for(int j = 0; j < c; j++){
+				p[i][j] = A.p[i][j];
+			}
+		}
+	}	
+}
+
+int Matriz::operator==(const Matriz &A)const{
+	if( l!=A.l || c != A.c){
+		cout << "Matrizes não compativeis para atribuição" << endl;
+		return false;
+	}
+	else{
+		for(int i = 0; i < l ; i++){
+			for(int j = 0; j < c; j++){
+				if (p[i][j] != A.p[i][j]) return false;
+			}
+		}
+		return true;
+	}
+	
+}
+
+int Matriz::operator!=(const Matriz &A)const{
+	if( l!=A.l || c != A.c){
+		cout << "Matrizes não compativeis para atribuição" << endl;
+		return true;
+	}
+	else{
+		for(int i = 0; i < l ; i++){
+			for(int j = 0; j < c; j++){
+				if (p[i][j] != A.p[i][j]) return true;
+			}
+		}
+		return false;
+	}
+	
+}
+
 
 Matriz::Matriz(){
 	p = NULL;
@@ -22,19 +154,17 @@ Matriz::Matriz(int linhas, int colunas, const double &valor){
 	}
 }
 
+
+//Estava vazio, confirmar se precisa desalocar da memoria! 
 Matriz::~Matriz(){
-
-}
-
-void Matriz::imprimeMatriz(){
-	for(int i = 0; i<l ; i++){
-		for(int j = 0; j<c; j++){
-			cout << p[i][j] << " ";
-		}
-		cout << endl;
+ 	
+	 for(int i = 0; i < c; i++){
+		delete[] p[i]; 
 	}
-	cout << endl;
+	delete[] p;
 }
+
+
 
 int Matriz::zeros(){
 	for(int i = 0; i<l; i++){
@@ -60,11 +190,116 @@ int Matriz::getCols(){
 	return c;
 }
 
-int main(){
-	int colunas,linhas;
-	Matriz M(2,5,10);
-	linhas = M.getRows();
-	colunas  = M.getCols();
-	cout << "colunas: " << colunas << " " << "linhas: " << linhas << endl;  
-	return(0);
+Matriz Matriz::operator+(const Matriz &B)const{
+	int linhaA = l;
+	int colunaA = c;
+	int linhaB = B.l;
+	int colunaB = B.c;
+	if(((linhaA != linhaB)||(colunaA != colunaB))){
+		cout << "Matrizes não compativeis para adição" << endl;
+		//	throw std::invalid_argument("Matrizes não compativeis para adição");
+	}
+	Matriz Resultado(linhaA,colunaA,0);
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			Resultado.p[i][j] = p[i][j] + B.p[i][j]; 
+		} 
+	}
+	return Resultado;
 }
+
+void Matriz::operator+=(const Matriz &B){
+	int linhaA = l;
+	int colunaA = c;
+	int linhaB = B.l;
+	int colunaB = B.c;
+	if(((linhaA != linhaB)||(colunaA != colunaB))){
+		cout << "Matrizes não compativeis para adição" << endl;
+		//	throw std::invalid_argument("Matrizes não compativeis para adição");
+	}
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			p[i][j] = p[i][j] + B.p[i][j]; 
+		} 
+	}
+}
+
+Matriz Matriz::operator-(const Matriz &B)const{
+	int linhaA = l;
+	int colunaA = c;
+	int linhaB = B.l;
+	int colunaB = B.c;
+	if(((linhaA != linhaB)||(colunaA != colunaB))){
+		cout << "Matrizes não compativeis para subtração" << endl;
+		//	throw std::invalid_argument("Matrizes não compativeis para adição");
+	}
+	Matriz Resultado(linhaA,colunaA,0);
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			Resultado.p[i][j] = p[i][j] - B.p[i][j]; 
+		} 
+	}
+	return Resultado;
+}
+
+void Matriz::operator-=(const Matriz &B){
+	int linhaA = l;
+	int colunaA = c;
+	int linhaB = B.l;
+	int colunaB = B.c;
+	if(((linhaA != linhaB)||(colunaA != colunaB))){
+		cout << "Matrizes não compativeis para subtração" << endl;
+		//	throw std::invalid_argument("Matrizes não compativeis para adição");
+	}
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			p[i][j] = p[i][j] - B.p[i][j]; 
+		} 
+	}
+}
+
+void Matriz::operator~(){
+	double m[c][l];
+	int auxColunas;
+	
+	//atribuição de valores da matriz local para uma matriz auxiliar
+	for(int i = 0; i < c; i++){
+		for(int j = 0; j < l; j++){
+			m[i][j] = p[j][i];
+		}
+	}
+
+	//Desalocação da matriz
+	for(int i = 0; i < l; i++){
+		delete[] p[i]; 
+	}
+	delete[] p;
+	
+	//atribuição de novos valores de linhas e colunas
+	auxColunas = c;
+	c = l;
+	l = auxColunas;
+	
+	//Alocação de memoria para nova matriz
+	p = new double * [c];
+
+	for(int i = 0; i<l; i++){
+		p[i] = new double[l];
+		for(int j = 0; j<c; j++){
+			p[i][j] = 0 ;
+		}
+	}
+
+	//atribuição de valores da nova matriz
+	for(int i = 0; i < l; i++){
+		for(int j = 0; j < c; j++){
+			p[i][j] = m[i][j];
+		}
+	}
+}
+
+double& Matriz::operator()(int const &linhas, int const &colunas){	
+	return p[linhas-1][colunas-1]; 
+}
+
+
