@@ -114,6 +114,7 @@ Matriz Matriz::operator~(){
 			p[i][j] = 0;
 		}
 	}
+	cout << "aqui roda" << endl;
 	return M;
 }
 
