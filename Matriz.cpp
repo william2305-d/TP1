@@ -90,45 +90,44 @@ void Matriz::operator+=(const Matriz &B)const{
 		} 
 	}
 }
-
-void Matriz::operator~(){
-	double m[c][l];
-	int auxColunas;
-	
-	//atribuição de valores da matriz local para uma matriz auxiliar
-	for(int i = 0; i < c; i++){
-		for(int j = 0; j < l; j++){
-			m[i][j] = p[j][i];
+Matriz Matriz::operator~(){
+	Matriz M(c,l,0);
+	for(int i; i < c; i++){
+		for(int j; j < l; j++){
+			M.p[i][j] = p[j][i];
 		}
 	}
-
-	//Desalocação da matriz
+	
+	//desalocação da matriz 
 	for(int i = 0; i < l; i++){
-		delete[] p[i]; 
+		delete[]  p[i];
 	}
-	delete[] p;
-	
-	//atribuição de novos valores de linhas e colunas
-	auxColunas = c;
-	c = l;
-	l = auxColunas;
-	
-	//Alocação de memoria para nova matriz
-	p = new double * [c];
+	delete[]p;
 
+	//alocação da nova matriz
+	int auxl = c;
+	int auxc = l;
+	p = new double * [auxl];
 	for(int i = 0; i<l; i++){
-		p[i] = new double[l];
+		p[i] = new double[c];
 		for(int j = 0; j<c; j++){
-			p[i][j] = 0 ;
+			p[i][j] = 0;
 		}
 	}
+	return M;
+}
 
-	//atribuição de valores da nova matriz
-	for(int i = 0; i < l; i++){
-		for(int j = 0; j < c; j++){
-			p[i][j] = m[i][j];
-		}
+void Matriz::operator=(const Matriz &A){
+	if( l!=A.l || c != A.c){
+		cout << "Matrizes não compativeis para atribuição" << endl;
 	}
+	else{
+		for(int i = 0; i < l ; i++){
+			for(int j = 0; j < c; j++){
+				p[i][j] = A.p[i][j];
+			}
+		}
+	}	
 }
 
 
@@ -137,7 +136,7 @@ int main(){
 	Matriz M1(5,2,7);
 	Matriz M2(5,2,12);
 	M1.imprimeMatriz();
-	~M1;
+	M1=~M1;
 	M1.imprimeMatriz();
 	return(0);
 }

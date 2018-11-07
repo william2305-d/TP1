@@ -18,5 +18,7 @@ class Matriz{
 		int ones();
 		Matriz operator+(const Matriz &A)const;
 		void operator+=(const Matriz &A)const;
-		void operator~();
+		Matriz operator~();
+		void operator=(const Matriz &A);
+		
 };
