@@ -19,16 +19,16 @@ Lista das tarefinhas:
 - transposta precisa ser concertada
 - Subtração OK
 - Subtração&atribuição OK
-- Igualdade OK(porém quando as matrizes tem dimensões diferentes a verificação da erro)
+- Igualdade OK
 - Desigualdade OK 
 - Leitura OK
 - atribuição OK
-- construtor de cópia  acusa falha de segmentação
-- multiplicação OK(porém se a matriz que recebe o resultado tiver dimensão maior que o necessário a atribuição não é feita)
-- multiplicação&atribuição OK(porém é necessário verificar como pode ser atribuido em caso de dimensões diferentes)
+- construtor de cópia Ok
+- multiplicação ok 
+- multiplicação&atribuição ok
 - multiplicação por constante  OK
 - multiplicação&atribuição por constante OK
 - Impressão OK 
 - ones()  OK
 - zeros() OK
-- M1(2,3) Ainda não feito
+- M1(2,3) OK
