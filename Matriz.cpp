@@ -157,8 +157,7 @@ Matriz::Matriz(int linhas, int colunas, const double &valor){
 
 //Estava vazio, confirmar se precisa desalocar da memoria! 
 Matriz::~Matriz(){
- 	
-	 for(int i = 0; i < c; i++){
+ 	for(int i = 0; i < l ; i++){
 		delete[] p[i]; 
 	}
 	delete[] p;
@@ -300,4 +299,10 @@ void Matriz::operator~(){
 
 double& Matriz::operator()(int const &linhas, int const &colunas){	
 	return p[linhas-1][colunas-1]; 
+}
+
+int main(){
+	Matriz A(5,10);
+	Matriz B(A);
+	cout << B << endl;
 }
