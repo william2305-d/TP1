@@ -302,4 +302,3 @@ double& Matriz::operator()(int const &linhas, int const &colunas){
 	return p[linhas-1][colunas-1]; 
 }
 
-
