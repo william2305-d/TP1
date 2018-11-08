@@ -9,7 +9,7 @@ Matriz::Matriz(){
 	p = NULL;
 }
 
-Matriz::Matriz(int linhas, int colunas, const double &valor){
+Matriz::Matriz(int linhas, int colunas, const double &valor = 0){
 	l = linhas;
 	c = colunas;
 	p = new double * [l];
@@ -22,7 +22,11 @@ Matriz::Matriz(int linhas, int colunas, const double &valor){
 }
 
 Matriz::~Matriz(){
-
+	//Desalocação da matriz
+	for(int i = 0; i<l; i++){
+		delete[] p[i];
+	}
+	delete[] p;
 }
 
 void Matriz::imprimeMatriz(){
