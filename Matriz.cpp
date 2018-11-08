@@ -92,29 +92,11 @@ void Matriz::operator+=(const Matriz &B)const{
 }
 Matriz Matriz::operator~(){
 	Matriz M(c,l,0);
-	for(int i; i < c; i++){
-		for(int j; j < l; j++){
+	for(int i = 0; i < c; i++){
+		for(int j = 0; j < l; j++){
 			M.p[i][j] = p[j][i];
 		}
 	}
-	
-	//desalocação da matriz 
-	for(int i = 0; i < l; i++){
-		delete[]  p[i];
-	}
-	delete[]p;
-
-	//alocação da nova matriz
-	int auxl = c;
-	int auxc = l;
-	p = new double * [auxl];
-	for(int i = 0; i<l; i++){
-		p[i] = new double[c];
-		for(int j = 0; j<c; j++){
-			p[i][j] = 0;
-		}
-	}
-	cout << "aqui roda" << endl;
 	return M;
 }
 
@@ -135,9 +117,10 @@ void Matriz::operator=(const Matriz &A){
 int main(){
 	int colunas,linhas;
 	Matriz M1(5,2,7);
-	Matriz M2(5,2,12);
+	Matriz M2(2,5,12);
 	M1.imprimeMatriz();
-	M1=~M1;
+	M2=~M1;
+	M2.imprimeMatriz();
 	M1.imprimeMatriz();
 	return(0);
 }
