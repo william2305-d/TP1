@@ -69,6 +69,7 @@ void Matriz::operator*=(const Matriz &right){
 	*this = res;
 }
 
+
 ostream& operator<<(ostream& os, const Matriz& m){  
 	for(int i = 0; i < m.l ; i++){
 		for(int j = 0; j < m.c; j++){
@@ -90,19 +91,6 @@ istream& operator>>(istream& os, Matriz& m){
 	}
 	return os;
 }   
-  
-void Matriz::operator=(const Matriz &A){
-	if( l!=A.l || c != A.c){
-		cout << "Matrizes não compativeis para atribuição" << endl;
-	}
-	else{
-		for(int i = 0; i < l ; i++){
-			for(int j = 0; j < c; j++){
-				p[i][j] = A.p[i][j];
-			}
-		}
-	}	
-}
 
 int Matriz::operator==(const Matriz &A)const{
 	if( l!=A.l || c != A.c){
@@ -141,7 +129,7 @@ Matriz::Matriz(){
 	p = NULL;
 }
 
-Matriz::Matriz(int linhas, int colunas, const double &valor = 0){
+Matriz::Matriz(int linhas, int colunas, const double &valor){
 	l = linhas;
 	c = colunas;
 	p = new double * [l];
@@ -277,7 +265,7 @@ void Matriz::operator-=(const Matriz &B){
 	}
 }
 
-double&a Matriz::operator()(int const &linhas, int const &colunas){	
+double& Matriz::operator()(int const &linhas, int const &colunas){	
 	return p[linhas-1][colunas-1]; 
 }
 
@@ -304,7 +292,7 @@ int main(){
 	Y.unit();
 	A(2,1) = 10;
 	Y.zeros();
-	//C=A+A;
+	C=A+A;
 	C-=A;
 	A=C-A;
 	A+= A;
