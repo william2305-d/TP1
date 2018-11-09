@@ -304,5 +304,6 @@ double& Matriz::operator()(int const &linhas, int const &colunas){
 int main(){
 	Matriz A(5,10);
 	Matriz B(A);
+	Matriz C = B;
 	cout << B << endl;
 }
