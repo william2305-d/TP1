@@ -16,14 +16,12 @@ class Matriz{
 		int ones();
 		Matriz operator+(const Matriz &A)const;
 		Matriz operator~();
-		void operator+=(const Matriz &A); //não sao constante pq altera a primeira Matriz
-		//Caio
+		void operator+=(const Matriz &A);
 		void operator*=(double const &right);
 		Matriz operator*(double const &right);
 		Matriz operator*(const Matriz &right);
 		void operator*=(const Matriz &right);
-		friend ostream& operator<< (ostream& os, const Matriz& m); //contante também, apenas leitura
-		//Manu
+		friend ostream& operator<< (ostream& os, const Matriz& m);
 		Matriz operator-(const Matriz &A)const;
 		void operator-=(const Matriz &A);
 		friend istream& operator>>(istream& os, Matriz& m);
