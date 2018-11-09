@@ -281,29 +281,3 @@ void Matriz::unit(){
 		}
 	}
 }
-
-int main(){
-	Matriz Y;
-	Matriz X(3,1),A(3,3),C(3,3);
-	Matriz W = C;
-	Matriz Z(A);
-	int numeroLinhas = A.getRows();
-	int numeroColunas = A.getCols();
-	Y.unit();
-	A(2,1) = 10;
-	Y.zeros();
-	C=A+A;
-	C-=A;
-	A=C-A;
-	A+= A;
-	A=~C;
-	X.ones();
-	X*=2;
-	C=A*X;
-	C*=X;
-	if(A==C)
-	if(X!=Y)
-	cout << C << endl;
-	cin >> Y;
-	return 0;
-}
