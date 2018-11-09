@@ -277,6 +277,45 @@ void Matriz::operator-=(const Matriz &B){
 	}
 }
 
-double& Matriz::operator()(int const &linhas, int const &colunas){	
+double&a Matriz::operator()(int const &linhas, int const &colunas){	
 	return p[linhas-1][colunas-1]; 
+}
+
+void Matriz::unit(){
+	for(int i = 0; i<l; i++){
+		for(int j = 0; j<c; j++){
+			if(i == j){
+				p[i][j] = 1;
+			}
+			else{
+				p[i][j] = 0;
+			}
+		}
+	}
+}
+
+int main(){
+	Matriz Y;
+	Matriz X(3,1),A(3,3),C(3,3);
+	Matriz W = C;
+	Matriz Z(A);
+	int numeroLinhas = A.getRows();
+	int numeroColunas = A.getCols();
+	Y.unit();
+	A(2,1) = 10;
+	Y.zeros();
+	//C=A+A;
+	C-=A;
+	A=C-A;
+	A+= A;
+	A=~C;
+	X.ones();
+	X*=2;
+	C=A*X;
+	C*=X;
+	if(A==C)
+	if(X!=Y)
+	cout << C << endl;
+	cin >> Y;
+	return 0;
 }

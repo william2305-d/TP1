@@ -30,5 +30,6 @@ class Matriz{
 		void operator=(const Matriz &A);
 		int operator==(const Matriz &A)const;
 		int operator!=(const Matriz &A)const;
-		double& operator()(int const &linhas, int const &colunas); 		
+		double& operator()(int const &linhas, int const &colunas); 
+		void unit();		
 };
