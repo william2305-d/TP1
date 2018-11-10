@@ -302,20 +302,13 @@ Matriz& Matriz::operator -= (const Matriz& B){
 	return *this;
 }
 
-
-
-double& Matriz::operator()(int const &linhas, int const &colunas){	
-	return p[linhas-1][colunas-1]; 
-}
-
-/*
 //A(2,1)=10;
-double&a Matriz::operator () (int const &linhas, int const &colunas){	
+double& Matriz::operator () (int const &linhas, int const &colunas){	
 	if(l < linhas || 0 >= linhas  || c < colunas || 0 >= colunas){
 		throw std::invalid_argument("Elemento fora da matriz");
 	}
 	return p[linhas-1][colunas-1]; 
-}*/
+}
 
 //Y.unit()
 void Matriz::unit(){
