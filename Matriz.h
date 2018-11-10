@@ -4,8 +4,8 @@ using namespace std;
 class Matriz{
 	private:
 		int l,c;
-	public:
 		double **p;
+	public:
 		Matriz();
 		Matriz(const Matriz &m);
 		Matriz(int linhas, int colunas, const double &valor = 0);
