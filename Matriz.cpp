@@ -1,11 +1,15 @@
 #include <iostream>
+#include <stdexcept>
 #include "Matriz.h"
 using namespace std;
 
-Matriz::Matriz(const Matriz &m){
+//Construtor de cópia e atribuição
+//Matriz W = C;
+//Matriz Z(A);
+Matriz::Matriz(const Matriz& m) {
 	l = m.l;
 	c = m.c;
-	//Nova matriz, apenas valores s�o copiados.
+	//Nova matriz, apenas valores são copiados.
 	p = new double * [l];
 	for(int i = 0; i<l; i++){
 		p[i] = new double[c];
@@ -15,15 +19,19 @@ Matriz::Matriz(const Matriz &m){
 	}
 }
 
-void Matriz::operator *= (double const &right){
+//X*=2;
+Matriz& Matriz::operator *= (double const& right){
 	for (int i = 0; i < l; i++){
 		for (int j = 0; j < c; j++){
 			p[i][j] *= right;
 		}
 	}
+	return *this;
 }
 
-Matriz Matriz::operator*(double const &right){
+//Extrapolação de X*=2;
+//C=X*2;
+Matriz Matriz::operator * (double const& right) const{
 	Matriz res(l, c);
 	for (int i = 0; i < l; i++){
 		for (int j = 0; j < c; j++){
@@ -33,48 +41,48 @@ Matriz Matriz::operator*(double const &right){
 	return res;
 }
 
-Matriz Matriz::operator*(const Matriz &right){
+//C=A*X;
+Matriz Matriz::operator * (const Matriz& right) const{
 	if(c !=right.l){
-		cout << "Matrizes n�o compativeis para multiplica��o" << endl;
-		Matriz res(l, right.c);
-		return res;
+		//Se a coluna da esquerda é diferente da linha da direita, não têm como ser feita a multiplicação e é lançado um erro.
+		throw std::invalid_argument( "Matrizes não compativeis para multiplicação" );
 	}
-	else{
-		Matriz res(l, right.c);
-		for (int i = 0; i < res.l; i++){
-			for (int j = 0; j < res.c; j++){
-				double acc = 0;
-				for (int k = 0; k < c; k++){
-					acc+= p[i][k] * right.p[k][j];
-				}
-				res.p[i][j] = acc;
+	Matriz res(l, right.c);
+	for (int i = 0; i < res.l; i++){
+		for (int j = 0; j < res.c; j++){
+			double acc = 0;
+			for (int k = 0; k < c; k++){
+				acc+= p[i][k] * right.p[k][j];
 			}
+			res.p[i][j] = acc;
 		}
-		return res;
 	}
+	return res;
 }
 
-void Matriz::operator*=(const Matriz &right){
-	if(c !=right.l || c !=right.c){
-		cout << "Matrizes n�o compativeis para multiplica��o" << endl;
+//C*=X;
+Matriz& Matriz::operator *= (const Matriz& right){
+	if(c != right.l){
+		//Se a coluna da esquerda é diferente da linha da direita, não têm como ser feita a multiplicação e é lançado um erro.
+		throw invalid_argument( "Matrizes não compativeis para multiplicação" );
 	}
-	else{
-		Matriz res(l, right.c);
-		for (int i = 0; i < res.l; i++){
-			for (int j = 0; j < res.c; j++){
-				double acc = 0;
-				for (int k = 0; k < c; k++){
-					acc+= p[i][k] * right.p[k][j];
-				}
-				res.p[i][j] = acc;
+	//É criada uma matriz para o resultado, pois se não fosse feito, o resultado seria alterado
+	Matriz res(l, right.c);
+	for (int i = 0; i < res.l; i++){
+		for (int j = 0; j < res.c; j++){
+			double acc = 0;
+			for (int k = 0; k < c; k++){
+				acc+= p[i][k] * right.p[k][j];
 			}
+			res.p[i][j] = acc;
 		}
-		*this = res;
 	}
+	*this = res;
+	return *this;
 }
 
-
-ostream& operator<<(ostream& os, const Matriz& m){  
+//cout << C << endl;
+ostream& operator << (ostream& os, const Matriz& m) {  
 	for(int i = 0; i < m.l ; i++){
 		for(int j = 0; j < m.c; j++){
 			os << m.p[i][j] << " ";
@@ -84,7 +92,8 @@ ostream& operator<<(ostream& os, const Matriz& m){
 	return os;
 } 
 
-istream& operator>>(istream& os, Matriz& m){ 
+//cin >> Y;
+istream& operator >> (istream& os, Matriz& m){ 
 	cout << "A Matriz possui " << m.l << " Linhas " << m.c << " Colunas"<< endl;
 	for(int i = 0; i < m.l ; i++){
 		for(int j = 0; j < m.c; j++){
@@ -96,56 +105,83 @@ istream& operator>>(istream& os, Matriz& m){
 	return os;
 }   
 
-int Matriz::operator==(const Matriz &A)const{
+Matriz& Matriz::operator = (const Matriz &A){
+	//Destrói o conteúdo anterior
+	for(int i = 0; i < l ; i++){
+		delete[] p[i]; 
+	}
+	delete[] p;
+	//Cria uma nova matriz igual a A.
+	l = A.l;
+	c = A.c;
+	p = new double * [l];
+	for(int i = 0; i<l; i++){
+		p[i] = new double[c];
+		for(int j = 0; j<c; j++){
+			p[i][j] = A.p[i][j];
+		}
+	}
+	return *this;
+}
+
+//if (A == C)
+bool Matriz::operator == (const Matriz& A)const{
+	//Se as dimensões não são iguais, então não é igual
 	if( l!=A.l || c != A.c){
-		cout << "Matrizes n�o compativeis para atribui��o" << endl;
 		return false;
 	}
 	else{
 		for(int i = 0; i < l ; i++){
 			for(int j = 0; j < c; j++){
+				//Se algum elemento não é igual, então não é igual
 				if (p[i][j] != A.p[i][j]) return false;
 			}
 		}
 		return true;
 	}
-	
 }
 
-int Matriz::operator!=(const Matriz &A)const{
+//if (X != Y)
+bool Matriz::operator != (const Matriz& A)const{
+	//Se as dimensões são diferentes, então é diferente
 	if( l!=A.l || c != A.c){
-		cout << "Matrizes n�o compativeis para atribui��o" << endl;
 		return true;
 	}
 	else{
 		for(int i = 0; i < l ; i++){
 			for(int j = 0; j < c; j++){
+				//Se algum elemento é diferente, então é diferente
 				if (p[i][j] != A.p[i][j]) return true;
 			}
 		}
 		return false;
 	}
-	
 }
 
-
+//Matriz Y;
 Matriz::Matriz(){
+	l = 0;
+	c = 0;
 	p = NULL;
 }
 
+//Matriz X(3,1), A(3,3), C(3,3);
 Matriz::Matriz(int linhas, int colunas, const double &valor){
+	if(0 > linhas || 0 > colunas){
+		throw std::invalid_argument("Não podem existir dimensões negativas");
+	}
 	l = linhas;
 	c = colunas;
 	p = new double * [l];
-	for(int i = 0; i<l; i++){
+	for(int i = 0; i < l; i++){
 		p[i] = new double[c];
-		for(int j = 0; j<c; j++){
+		for(int j = 0; j < c; j++){
 			p[i][j] = valor;
 		}
 	}
 }
 
-//Estava vazio, confirmar se precisa desalocar da memoria! 
+//Destrutor
 Matriz::~Matriz(){
  	for(int i = 0; i < l ; i++){
 		delete[] p[i]; 
@@ -153,8 +189,7 @@ Matriz::~Matriz(){
 	delete[] p;
 }
 
-
-
+//Y.zeros();
 int Matriz::zeros(){
 	for(int i = 0; i<l; i++){
 		for(int j=0; j<c; j++){
@@ -163,6 +198,7 @@ int Matriz::zeros(){
 	}
 }
 
+//X.ones();
 int Matriz::ones(){
 	for(int i = 0; i<l; i++){
 		for(int j=0; j<c; j++){
@@ -171,52 +207,56 @@ int Matriz::ones(){
 	}
 }
 
-int Matriz::getRows(){
+//int numeroLinhas = A.getRows();
+int Matriz::getRows() const{
 	return l;
 }
 
-int Matriz::getCols(){
+//Int numeroColunas = A.getCols();
+int Matriz::getCols() const{
 	return c;
 }
 
-Matriz Matriz::operator+(const Matriz &B)const{
+//C=A+A;
+Matriz Matriz::operator + (const Matriz& B)const{
 	int linhaA = l;
 	int colunaA = c;
 	int linhaB = B.l;
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
-		cout << "Matrizes n�o compativeis para adi��o" << endl;
-		return B;
+		//Se as dimensões são diferentes, não têm como ser feita a adição e é lançado um erro
+		throw std::invalid_argument("Matrizes não compativeis para adição");
 	}
-	else{
-		Matriz Resultado(linhaA,colunaA,0);
-		for(int i = 0; i<linhaA; i++){
-			for(int j = 0; j<colunaA; j++){
-				Resultado.p[i][j] = p[i][j] + B.p[i][j]; 
-			} 
-		}
-		return Resultado;
+	Matriz Resultado(linhaA,colunaA,0);
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			Resultado.p[i][j] = p[i][j] + B.p[i][j]; 
+		} 
 	}
+	return Resultado;
 }
 
-void Matriz::operator+=(const Matriz &B){
+//A+=A;
+Matriz& Matriz::operator += (const Matriz& B){
 	int linhaA = l;
 	int colunaA = c;
 	int linhaB = B.l;
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
-		cout << "Matrizes n�o compativeis para adi��o" << endl;
+		//Se as dimensões são diferentes, não têm como ser feita a adição e é lançado um erro
+		throw std::invalid_argument("Matrizes não compativeis para adição");
 	}
-	else{
-		for(int i = 0; i<linhaA; i++){
-			for(int j = 0; j<colunaA; j++){
-				p[i][j] = p[i][j] + B.p[i][j]; 
-			} 
-		}
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			p[i][j] += B.p[i][j]; 
+		} 
 	}
+	return *this;
 }
-Matriz Matriz::operator~(){
-	Matriz M(c,l,0);
+
+//A=~C;
+Matriz Matriz::operator ~ () const{
+	Matriz M(c,l);
 	for(int i = 0; i < c; i++){
 		for(int j = 0; j < l; j++){
 			M.p[i][j] = p[j][i];
@@ -225,60 +265,59 @@ Matriz Matriz::operator~(){
 	return M;
 }
 
-void Matriz::operator=(const Matriz &A){
-	if( l!=A.l || c != A.c){
-		cout << "Matrizes não compativeis para atribuição" << endl;
-	}
-	else{
-		for(int i = 0; i < l ; i++){
-			for(int j = 0; j < c; j++){
-				p[i][j] = A.p[i][j];
-			}
-		}
-	}	
-}
-
-Matriz Matriz::operator-(const Matriz &B)const{
+//A=C-A; 
+Matriz Matriz::operator - (const Matriz& B)const{
 	int linhaA = l;
 	int colunaA = c;
 	int linhaB = B.l;
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
-		cout << "Matrizes n�o compativeis para subtra��o" << endl;
+		//Se as dimensões são diferentes, não têm como ser feita a subtração e é lançado um erro
+		throw std::invalid_argument("Matrizes não compativeis para subtração");
 	}
-	else{
-		Matriz Resultado(linhaA,colunaA,0);
-		for(int i = 0; i<linhaA; i++){
-			for(int j = 0; j<colunaA; j++){
-				Resultado.p[i][j] = p[i][j] - B.p[i][j]; 
-			} 
-		}
-		return Resultado;
+	Matriz Resultado(linhaA,colunaA,0);
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			Resultado.p[i][j] = p[i][j] - B.p[i][j]; 
+		} 
 	}
-	return B;
+	return Resultado;
 }
 
-void Matriz::operator-=(const Matriz &B){
+//C-=A;
+Matriz& Matriz::operator -= (const Matriz& B){
 	int linhaA = l;
 	int colunaA = c;
 	int linhaB = B.l;
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
-		cout << "Matrizes n�o compativeis para subtra��o" << endl;
+		//Se as dimensões são diferentes, não têm como ser feita a subtração e é lançado um erro
+		throw std::invalid_argument("Matrizes não compativeis para subtração");
 	}
-	else{
-		for(int i = 0; i<linhaA; i++){
-			for(int j = 0; j<colunaA; j++){
-				p[i][j] = p[i][j] - B.p[i][j]; 
-			} 
-		}
+	for(int i = 0; i<linhaA; i++){
+		for(int j = 0; j<colunaA; j++){
+			p[i][j] -= B.p[i][j]; 
+		} 
 	}
+	return *this;
 }
+
+
 
 double& Matriz::operator()(int const &linhas, int const &colunas){	
 	return p[linhas-1][colunas-1]; 
 }
 
+/*
+//A(2,1)=10;
+double&a Matriz::operator () (int const &linhas, int const &colunas){	
+	if(l < linhas || 0 >= linhas  || c < colunas || 0 >= colunas){
+		throw std::invalid_argument("Elemento fora da matriz");
+	}
+	return p[linhas-1][colunas-1]; 
+}*/
+
+//Y.unit()
 void Matriz::unit(){
 	for(int i = 0; i<l; i++){
 		for(int j = 0; j<c; j++){
@@ -290,4 +329,30 @@ void Matriz::unit(){
 			}
 		}
 	}
+}
+
+int main(){
+	Matriz Y;
+	Matriz X(3,1),A(3,3),C(3,3);
+	Matriz W = C;
+	Matriz Z(A);
+	int numeroLinhas = A.getRows();
+	int numeroColunas = A.getCols();
+	Y.unit();
+	A(2,1) = 10;
+	Y.zeros();
+	C=A+A;
+	C-=A;
+	A=C-A;
+	A+= A;
+	A=~C;
+	X.ones();
+	X*=2;
+	C=A*X;
+	//C*=X; Não funcionaria pois C neste momento tem dimensões (3,1) e X (3,1).
+	if(A==C)
+	if(X!=Y)
+	cout << C << endl;
+	cin >> Y;
+	return 0;
 }
