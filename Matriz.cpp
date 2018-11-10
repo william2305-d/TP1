@@ -36,37 +36,41 @@ Matriz Matriz::operator*(double const &right){
 Matriz Matriz::operator*(const Matriz &right){
 	if(c !=right.l){
 		cout << "Matrizes não compativeis para multiplicação" << endl;
-		//throw std::invalid_argument( "Matrices aren't compatible for multiplication" );
+		Matriz res(l, right.c);
+		return res;
 	}
-	Matriz res(l, right.c);
-	for (int i = 0; i < res.l; i++){
-		for (int j = 0; j < res.c; j++){
-			double acc = 0;
-			for (int k = 0; k < c; k++){
-				acc+= p[i][k] * right.p[k][j];
+	else{
+		Matriz res(l, right.c);
+		for (int i = 0; i < res.l; i++){
+			for (int j = 0; j < res.c; j++){
+				double acc = 0;
+				for (int k = 0; k < c; k++){
+					acc+= p[i][k] * right.p[k][j];
+				}
+				res.p[i][j] = acc;
 			}
-			res.p[i][j] = acc;
 		}
+		return res;
 	}
-	return res;
 }
 
 void Matriz::operator*=(const Matriz &right){
 	if(c !=right.l || c !=right.c){
 		cout << "Matrizes não compativeis para multiplicação" << endl;
-		//throw invalid_argument( "Matrices aren't compatible for multiplication" );
 	}
-	Matriz res(l, right.c);
-	for (int i = 0; i < res.l; i++){
-		for (int j = 0; j < res.c; j++){
-			double acc = 0;
-			for (int k = 0; k < c; k++){
-				acc+= p[i][k] * right.p[k][j];
+	else{
+		Matriz res(l, right.c);
+		for (int i = 0; i < res.l; i++){
+			for (int j = 0; j < res.c; j++){
+				double acc = 0;
+				for (int k = 0; k < c; k++){
+					acc+= p[i][k] * right.p[k][j];
+				}
+				res.p[i][j] = acc;
 			}
-			res.p[i][j] = acc;
 		}
+		*this = res;
 	}
-	*this = res;
 }
 
 
@@ -182,15 +186,17 @@ Matriz Matriz::operator+(const Matriz &B)const{
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
 		cout << "Matrizes não compativeis para adição" << endl;
-		//	throw std::invalid_argument("Matrizes não compativeis para adição");
+		return B;
 	}
-	Matriz Resultado(linhaA,colunaA,0);
-	for(int i = 0; i<linhaA; i++){
-		for(int j = 0; j<colunaA; j++){
-			Resultado.p[i][j] = p[i][j] + B.p[i][j]; 
-		} 
+	else{
+		Matriz Resultado(linhaA,colunaA,0);
+		for(int i = 0; i<linhaA; i++){
+			for(int j = 0; j<colunaA; j++){
+				Resultado.p[i][j] = p[i][j] + B.p[i][j]; 
+			} 
+		}
+		return Resultado;
 	}
-	return Resultado;
 }
 
 void Matriz::operator+=(const Matriz &B){
@@ -200,12 +206,13 @@ void Matriz::operator+=(const Matriz &B){
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
 		cout << "Matrizes não compativeis para adição" << endl;
-		//	throw std::invalid_argument("Matrizes não compativeis para adição");
 	}
-	for(int i = 0; i<linhaA; i++){
-		for(int j = 0; j<colunaA; j++){
-			p[i][j] = p[i][j] + B.p[i][j]; 
-		} 
+	else{
+		for(int i = 0; i<linhaA; i++){
+			for(int j = 0; j<colunaA; j++){
+				p[i][j] = p[i][j] + B.p[i][j]; 
+			} 
+		}
 	}
 }
 Matriz Matriz::operator~(){
@@ -238,15 +245,17 @@ Matriz Matriz::operator-(const Matriz &B)const{
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
 		cout << "Matrizes não compativeis para subtração" << endl;
-		//	throw std::invalid_argument("Matrizes não compativeis para adição");
 	}
-	Matriz Resultado(linhaA,colunaA,0);
-	for(int i = 0; i<linhaA; i++){
-		for(int j = 0; j<colunaA; j++){
-			Resultado.p[i][j] = p[i][j] - B.p[i][j]; 
-		} 
+	else{
+		Matriz Resultado(linhaA,colunaA,0);
+		for(int i = 0; i<linhaA; i++){
+			for(int j = 0; j<colunaA; j++){
+				Resultado.p[i][j] = p[i][j] - B.p[i][j]; 
+			} 
+		}
+		return Resultado;
 	}
-	return Resultado;
+	return B;
 }
 
 void Matriz::operator-=(const Matriz &B){
@@ -256,12 +265,13 @@ void Matriz::operator-=(const Matriz &B){
 	int colunaB = B.c;
 	if(((linhaA != linhaB)||(colunaA != colunaB))){
 		cout << "Matrizes não compativeis para subtração" << endl;
-		//	throw std::invalid_argument("Matrizes não compativeis para adição");
 	}
-	for(int i = 0; i<linhaA; i++){
-		for(int j = 0; j<colunaA; j++){
-			p[i][j] = p[i][j] - B.p[i][j]; 
-		} 
+	else{
+		for(int i = 0; i<linhaA; i++){
+			for(int j = 0; j<colunaA; j++){
+				p[i][j] = p[i][j] - B.p[i][j]; 
+			} 
+		}
 	}
 }
 
