@@ -61,7 +61,7 @@ Matriz Matriz::operator * (const Matriz& right) const{
 
 //C*=X;
 Matriz& Matriz::operator *= (const Matriz& right){
-	if(c !=right.l){
+	if(c != right.l){
 		//Se a coluna da esquerda é diferente da linha da direita, não têm como ser feita a multiplicação e é lançado um erro.
 		throw invalid_argument( "Matrizes não compativeis para multiplicação" );
 	}
