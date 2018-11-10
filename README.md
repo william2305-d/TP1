@@ -16,7 +16,7 @@ Lista das tarefinhas:
 
 - Soma  OK
 - Soma&atribuição  OK
-- transposta precisa ser concertada
+- transposta precisa ser consertada
 - Subtração OK
 - Subtração&atribuição OK
 - Igualdade OK
